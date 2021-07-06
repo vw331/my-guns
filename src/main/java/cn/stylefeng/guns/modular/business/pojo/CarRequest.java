@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.business.pojo;
 import cn.stylefeng.roses.kernel.rule.pojo.request.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,4 +32,6 @@ public class CarRequest extends BaseRequest {
     private BigDecimal carPrice;
 
     private String manufacturer;
+
+
 }

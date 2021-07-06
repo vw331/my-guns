@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        label {
+            display: block;
+            width: 120px
+        }
+        input {
+            width: 300px
+        }
+    </style>
+</head>
+<body>
+<form action="" name="form">
+    <fieldset>
+        <legend>配置</legend>
+        <div>
+            <label> 受试者ID：
+                <input type="text" name="patientId" value="sunhao">
+            </label>
+        </div>
+        <div>
+            <label>封面</label>
+            <input type="text" name="cover" value="http://192.168.2.227:8080/pdf/cover/123">
+        </div>
+        <div>
+            <label>页头</label>
+            <input type="text" name="header" value="http://192.168.2.227:8080/pdf/cover/123/header">
+        </div>
+        <div>
+            <label> 标题：
+                <input type="text" name="title" value="sunhao">
+            </label>
+        </div>
+        <div>
+            <label> 页面:
+                <select name="orientation">
+                    <option>Landscape </option>
+                    <option>Portrait </option>
+                </select>
+            </label>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>内容</legend>
+        <div>
+            <label>第一页:
+                <textarea  name="page" rows="10" cols="100">
+                    <h1>第一页</h1>
+                    <p>第一页内容</p>
+                </textarea>
+            </label>
+        </div>
+        <div>
+            <label>第二页:
+                <textarea  name="page" rows="10" cols="100">
+                     <h1>第二页</h1>
+                        <p>第二页内容</p>
+                </textarea>
+            </label>
+        </div>
+        <div>
+            <label>第二页:
+                <textarea  name="page" rows="10" cols="100">
+                     http://baidu.com
+                </textarea>
+            </label>
+        </div>
+    </fieldset>
+
+    <button>导出</button>
+</form>
+    <script>
+        document.forms['form'].onsubmit = function (e) {
+            const formData = new FormData(e.target)
+            formData.getAll("page").forEach(page => {
+                formData.append("pages", new Blob([page]), {type: 'text/plain'})
+            })
+            formData.delete("page")
+            fetch('/patient/pdf/create/12346', {
+                method: 'post',
+                body: formData,
+                responseType: 'blob'
+            })
+                .then(res => res.blob())
+                .then(blob => {
+                    let bl = new Blob([blob]);
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = '测试专用.pdf';
+                    link.click();
+                    window.URL.revokeObjectURL(link.href);
+                })
+
+            e.preventDefault()
+        }
+    </script>
+</body>
+</html>

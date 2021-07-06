@@ -79,7 +79,7 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authJwtTokenSecurityInterceptor);
+        registry.addInterceptor(authJwtTokenSecurityInterceptor).excludePathPatterns("/pdf/create");
         registry.addInterceptor(permissionSecurityInterceptor);
         registry.addInterceptor(optionsSecurityInterceptor);
     }
